@@ -51,7 +51,7 @@ def generate_subkeys(key: str):
         else:
             key = ans[i] = key[2:28] + key[0:2] + key[30:] + key[28:30]
         ans[i] = "".join(ans[i][elem] for elem in pc2)[:48]
-    print("ans: ", ans)
+    # print("ans: ", ans)
     return ans
     
 def des(block: str, key: str):
