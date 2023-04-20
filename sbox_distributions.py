@@ -2,10 +2,10 @@
 from constants import substitution_boxes
 from prettytable import PrettyTable, ALL
 
-table = PrettyTable(["alpha|beta"] + [str(i) for i in range(1, 16)])
-table.hrules=ALL
 for n in range(7):
     print(f"Substitution Box {n+1}:\n")
+    table = PrettyTable(["alpha|beta"] + [str(i) for i in range(1, 16)])
+    table.hrules=ALL
     for i in range(1,64):
         cts=[]
         for j in range(1,16):
