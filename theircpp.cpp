@@ -234,7 +234,7 @@ string DES(){
       		right_expanded += right[expansion_table[i]-1]; 
     };  // 3.3. The result is xored with a key
 		string xored = Xor(round_keys[i], right_expanded); 
-        cout << xored << endl; 
+        // cout << xored << endl; 
 		string res = ""; 
 		// 3.4. The result is divided into 8 equal parts and passed 
 		// through 8 substitution boxes. After passing through a 
@@ -248,7 +248,8 @@ string DES(){
 			int col = convertBinaryToDecimal(col1);
 			int val = substition_boxes[i][row][col];
 			res += convertDecimalToBinary(val);  
-		} cout << res << endl;
+		}
+		// } cout << res << endl;
 		// 3.5. Another permutation is applied
 		string perm2 =""; 
 		for(int i = 0; i < 32; i++){ 
@@ -274,15 +275,16 @@ string DES(){
 	//And we finally get the cipher text
 	return ciphertext; 
 }
-int main(){ 
+int main(int argc, char **argv){ 
 	// A 64 bit key
-	string key= "1010101010111011000010010001100000100111001101101100110011011101";
+	string key= argv[1];
 	// A block of plain text of 64 bits
-	pt= "1010101111001101111001101010101111001101000100110010010100110110";
+	pt= argv[2];
 	// Calling the function to generate 16 keys
   	generate_keys(key); 
-    cout<<"Plain text: "<<pt<<endl; 
+    // cout<<"Plain text: "<<pt<<endl;
 	// Applying the algo
     string ct= DES(); 
-    cout<<"Ciphertext: "<<ct<<endl;
+    // cout<<"Ciphertext: "<<ct<<endl;
+	cout<<ct;
 } 
