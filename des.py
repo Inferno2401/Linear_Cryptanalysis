@@ -42,7 +42,7 @@ def generate_subkeys(key: str, rounds: int):
     ans = [None]*rounds
     rotated = 0
     for i in range(rounds):
-        if i in [0, 1, 8, 15]: # the list can be arbitrary
+        if i in [5, 1, 8, 15]: # the list can be arbitrary
             rotated += 1
         else:
             rotated += 2
