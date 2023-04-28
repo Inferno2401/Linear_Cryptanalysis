@@ -12,14 +12,16 @@ def multi_xor(string: str, indices: list):
 
 # set up variables
 ROUNDS = 1
+p0 = 0.19
 N = 200 # for probability of success 99.8%
 
 def test():
     KEY = bin(1+np.random.randint(-1,1<<64-1))[2:].zfill(64)
     KEY_56BIT = "".join(KEY[elem] for elem in des_constants.pc1)[:56]
-    P = list(map(lambda x: bin(x)[2:].zfill(64), 1+np.random.randint(-1,1<<64-1, size=(N,))))
+    random_ints = zip(np.random.randint(1<<32, size=(N,)), np.random.randint(1<<32, size=(N,)))
+    P = list(map(lambda x: (bin(x[0])[2:].zfill(32) + bin(x[1])[2:].zfill(32)), random_ints))
     C = list(des.encrypt(p, KEY, ROUNDS) for p in P)
-    # print(list(zip(P, C)))
+    print("\n".join(str((p,c)) for p,c in zip(P, C)))
     T = 0
     crct = 0
     for p,c in zip(P, C): # turn into sum
@@ -28,13 +30,13 @@ def test():
         crct += (multi_xor(p, [2, 7, 13, 24, 48])^multi_xor(c, [2, 7, 13, 24]) == multi_xor(KEY_56BIT, [3]))
         T += (1 - (multi_xor(p, [2, 7, 13, 24, 48])^multi_xor(c, [2, 7, 13, 24])))
     print(crct/N)
-    return (1 if T>N/2 else 0) == multi_xor(KEY_56BIT, [3]),crct,multi_xor(KEY_56BIT, [3])
+    return ((p0<0.5) if T>N/2 else (p0>0.5)) == multi_xor(KEY_56BIT, [3]),crct,multi_xor(KEY_56BIT, [3])
 
-ntests = 100
+ntests = 1
 # print(sum(test() for i in (range(ntests)) if crct < 0.5))
 tot = s = 0
 for i in range(ntests):
-    val,crct,ans = test(); print("ans:", ans)
+    val,crct,ans = test(); #print("ans:", ans)
     if crct/N>0.5: continue
     tot += 1; s += val; 
 print(s, tot)
