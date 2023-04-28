@@ -10,6 +10,6 @@ for _ in range(n):
     t1 = time.time()
     expected_output = subprocess.check_output(['./a.out', key, msg]).decode()
     t2 = time.time()
-    ciphertext_test = des.edcrypt(msg, key)
+    ciphertext_test = des.encrypt(msg, key)
     t3 = time.time()
     print(_, ("passed" if expected_output==ciphertext_test else "failed") + f"; time taken = {(t3-t1)/(t2-t1):.2f}")
