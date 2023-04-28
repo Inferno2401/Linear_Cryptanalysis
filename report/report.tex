@@ -1,0 +1,28 @@
+\documentclass{article}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{hyperref}
+\geometry{top = 0.5 in, right = 1 in , left = 1 in}
+\hypersetup{colorlinks=true}
+
+\begin{document}
+
+    \title{\centering{Project Report} \\ \large{CS406 - Cryptography}}
+    \author{Ameya Vikrama Singh (210070007) \\ Krishna Agaram (210051003)}
+    \maketitle
+    \section{Implementing DES}
+    \subsection{Feistel Network}
+    A Feistel network is an invertible Pseudo-Random function construction. It is used in implementing block ciphers from the heuristic of Substitution-Permutation Ciphers. A Feistel network consists of multiple "rounds". In each round, we do the following:
+    $$F_n(a_n, b_n) = (b_n, a_n \oplus f(b_n))$$
+
+    where $f$ is a (supposedly) pseudorandom function henceforth called the Feistel function. The Feistel construction is provably pseudorandom under the assumption that $f$ is pseudorandom.
+
+    \subsection{DES - The Data Encryption Standard}
+    The Data Encryption Standard uses a Feistel network of 16 rounds.
+    
+
+
+\end{document}
