@@ -31,7 +31,7 @@ def test(KEY):
         prob += (multi_xor(p, [2, 7, 13, 24, 48])^multi_xor(c, [2, 7, 13, 24]) == multi_xor(KEY_56BIT, [3]))
         T += (multi_xor(p, [2, 7, 13, 24, 48])^multi_xor(c, [2, 7, 13, 24]))
     # print(prob/N)
-    if prob < 0.5: good.append(KEY_56BIT[:5])
+    if prob/N < 0.5: good.append(KEY_56BIT[:5])
     else: bad.append(KEY_56BIT[:5])
     return int((p0<0.5) if T<N/2 else (p0>0.5)), prob
 
