@@ -1,9 +1,11 @@
 # Find the distribution of the correlation NS between the input and output bits for each of the 8 S-boxes
-from constants import substitution_boxes
+from des_constants import substitution_boxes
 from prettytable import PrettyTable, ALL
 
-for n in range(7):
-    print(f"Substitution Box {n+1}:\n")
+best_bias = 0
+a0 = None; b0 = None; n0 = None
+for n in range(8):
+    # print(f"Substitution Box {n+1}:\n")
     table = PrettyTable(["alpha|beta"] + [str(i) for i in range(1, 16)])
     table.hrules=ALL
     for i in range(1,64):
@@ -19,5 +21,12 @@ for n in range(7):
                 xor_b = sum((ord(outbin[i])-ord('0'))for i in range(4) if b[i]=='1')%2
                 ct += xor_a==xor_b
             cts.append(ct-32)
+            if abs(ct-32)>abs(best_bias):
+                best_bias = ct-32
+                a0 = i; b0 = j; n0 = n
         table.add_row([i] + cts)
-    print(table)
+    # print(table)
+print("-"*50)
+print("best bias:", best_bias)
+print(f"achieved on sbox {n0+1} at alpha = {a0}, beta = {b0}")
+print("-"*50)

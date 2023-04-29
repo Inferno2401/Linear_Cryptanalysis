@@ -1,24 +1,26 @@
 import numpy as np
 from des_constants import *
 
-# convert_to_bitstring(substitution_boxes)
 def expand(half_block: str):
-    return np.array(list(half_block[expansion_table[i]] for i in range(48)))
+    return "".join(half_block[expansion_table[i]] for i in range(48))
 
 def xor(str1: str, str2: str):
     return "".join(map(lambda c: '0' if c[0] == c[1] else '1', zip(str1, str2)))
 
+ct = [0]*64
 def feistel_fn(half_block: str, subkey: str):
     
     # expand the half-block EXPANSION
     expanded = expand(half_block)
 
     # key mixing KEY SIMULATES THE SBOXES BEING RANDOM PERMUTATIONS
-    result = xor(expanded, subkey); #print(result)
+    result = xor(expanded, subkey); #print("res", result)
 
     # apply the S-boxes. RANDOM PERMUTATION
     # print(list(int(result[i] + result[i+5] + result[i+1:i+5], base=2) for i in range(0, 48, 6)))
     res = "".join(substitution_boxes[i//6][int(result[i] + result[i+5] + result[i+1:i+5], base=2)] for i in range(0, 48, 6))
+    # print("in: ", str(int(result[24:29], base=2)) + " out: " + str(int(substitution_boxes[4][int(result[24] + result[24+5] + result[24+1:24+5], base=2)], base=2)))
+    ct[int(result[24:30], base=2)]+=1
     #print(res)
     # permute the result
     
@@ -42,7 +44,7 @@ def generate_subkeys(key: str, rounds: int):
     ans = [None]*rounds
     rotated = 0
     for i in range(rounds):
-        if i in [5, 1, 8, 15]: # the list can be arbitrary
+        if i in [0, 1, 8, 15]: # the list can be arbitrary
             rotated += 1
         else:
             rotated += 2
@@ -59,7 +61,7 @@ def des(block: str, key: str, rounds, subkey_table):
     """
 
     # first, permute the block
-    # block = "".join(block[elem] for elem in permutation1)
+    block = "".join(block[elem] for elem in permutation1) #<- remove just for cryptanalysis
     
     # generate the sub keys for the feistel network
     subkeys = []
@@ -77,7 +79,7 @@ def des(block: str, key: str, rounds, subkey_table):
     
     # apply an inverse permutation to the block and return it
     ciphertext = block
-    # ciphertext = "".join(block[elem] for elem in inv_permutation1)
+    ciphertext = "".join(block[elem] for elem in inv_permutation1) #<- remove just for cryptanalysis
     return ciphertext
 
 def edcrypt(plain_or_cipher: str, key: str, rounds: int=16, decrypt=False):
@@ -101,8 +103,8 @@ if __name__ == "__main__":
     plaintext = "1010101111001101111001101010101111001101000100110010010100110110"
     key =       "1010101010111011000010010001100000100111001101101100110011011101"
 
-    cipher = encrypt(plaintext, key, 3)
-    decrypted = decrypt(cipher, key, 3)
+    cipher = encrypt(plaintext, key)
+    decrypted = decrypt(cipher, key)
     print(cipher)
     print(decrypted)
     expected_output = "1001111000100110100111110101101011111010010011011011101101110000"

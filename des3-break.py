@@ -29,16 +29,16 @@ def test():
     for p,c in zip(P, C): # turn into sum
         # prob += (multi_xor(p, [2, 7, 13, 24, 48])^multi_xor(c, [2, 7, 13, 24, 48]) == multi_xor(KEY_56BIT, [0,3]))
         # T += (1 - (multi_xor(p, [2, 7, 13, 24, 48])^multi_xor(c, [2, 7, 13, 24, 48])))
-        prob += (multi_xor(p, [2, 7, 13, 24, 48])^multi_xor(c, [2, 7, 13, 24]) == multi_xor(KEY_56BIT, [3]))
+        prob += (multi_xor(p, [2, 7, 13, 24, 48])^multi_xor(c, [2, 7, 13, 24]) == multi_xor(KEY_56BIT, [1, 2, 3]))
         T += (1 - (multi_xor(p, [2, 7, 13, 24, 48])^multi_xor(c, [2, 7, 13, 24])))
     print(prob/N)
-    return ((p0<0.5) if T>N/2 else (p0>0.5)) == multi_xor(KEY_56BIT, [3]),prob,multi_xor(KEY_56BIT, [3])
+    return ((p0<0.5) if T>N/2 else (p0>0.5)) == multi_xor(KEY_56BIT, [1, 2, 3]),prob
 
 ntests = 100
 # print(sum(test() for i in (range(ntests)) if crct < 0.5))
-tot = s = 0
+tot = s = t = 0
 for i in range(ntests):
-    val,crct,ans = test(); #print("ans:", ans)
-    # if crct/N>0.5: continue
-    tot += 1; s += val; 
+    val,crct = test(); #print("ans:", ans)
+    if crct/N>0.5: continue
+    tot += 1; s += val 
 print(s, tot)
